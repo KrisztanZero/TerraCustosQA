@@ -1,17 +1,17 @@
 package utilities;
 
 import org.openqa.selenium.WebDriver;
-import steps.LoginSteps;
+import actions.LoginActions;
 
 import java.util.Properties;
 
 public class LoginHandler {
 
-    private LoginSteps loginSteps;
+    private LoginActions loginActions;
     private Properties testProperties;
 
     public LoginHandler(WebDriver driver, Properties testProperties) {
-        this.loginSteps = new LoginSteps(driver);
+        this.loginActions = new LoginActions(driver);
         this.testProperties = testProperties;
     }
 
@@ -19,8 +19,8 @@ public class LoginHandler {
         String username = testProperties.getProperty("username");
         String password = testProperties.getProperty("password");
 
-        loginSteps.enterUsername(username);
-        loginSteps.enterPassword(password);
-        loginSteps.clickLoginButton();
+        loginActions.enterUsername(username);
+        loginActions.enterPassword(password);
+        loginActions.clickLoginButton();
     }
 }

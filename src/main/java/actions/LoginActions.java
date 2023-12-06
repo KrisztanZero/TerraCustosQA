@@ -1,13 +1,13 @@
-package steps;
+package actions;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import pages.LoginPage;
 
-public class LoginSteps {
+public class LoginActions {
     private LoginPage loginPage;
 
-    public LoginSteps(WebDriver driver) {
+    public LoginActions(WebDriver driver) {
         this.loginPage = new LoginPage(driver);
     }
 
