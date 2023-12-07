@@ -1,5 +1,8 @@
 package tests;
 
+import actions.LoginActions;
+import actions.NavbarActions;
+import actions.ProfileOffCanvasActions;
 import baseTests.BaseTest;
 import com.aventstack.extentreports.Status;
 import org.junit.jupiter.api.Assertions;
@@ -7,27 +10,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import pages.Navbar;
-import pages.ProfileOffCanvas;
 import testCases.LoginTestCases;
 
 public class LoginTest extends BaseTest {
 
     private LoginTestCases loginTestCases;
-    private Navbar navbar;
-    private ProfileOffCanvas profileOffCanvas;
+    private NavbarActions navbarActions;
+    private LoginActions loginActions;
+    private ProfileOffCanvasActions profileOffCanvasActions;
 
     public LoginTest() {
         this.loginTestCases = new LoginTestCases(driver, wait);
-        this.navbar = new Navbar(driver);
-        this.profileOffCanvas = new ProfileOffCanvas(driver);
+        this.navbarActions = new NavbarActions(driver, wait);
+        this.profileOffCanvasActions = new ProfileOffCanvasActions(driver, wait);
+        this.loginActions = new LoginActions(driver, wait);
     }
 
     @BeforeEach
     public void BeforeTestLogin(){
-        wait.until(ExpectedConditions.elementToBeClickable(navbar.getProfileIcon())).click();
-        wait.until(ExpectedConditions.elementToBeClickable(profileOffCanvas.getLoginButton())).click();
+        navbarActions.clickOnProfileIcon();
+        profileOffCanvasActions.clickOnLogin();
     }
 
     @ParameterizedTest
@@ -37,7 +39,7 @@ public class LoginTest extends BaseTest {
         test.log(Status.INFO,"Perform a valid login with username and password.");
         loginTestCases.performLogin(username, password);
 
-        String welcomeMessage = navbar.getWelcomeMessage().getText();
+        String welcomeMessage = navbarActions.getWelcomeMessage();
         Assertions.assertEquals("Welcome " + username, welcomeMessage, "Incorrect username or password");
     }
 
@@ -48,8 +50,8 @@ public class LoginTest extends BaseTest {
         test.log(Status.INFO, "Perform valid login with email and password");
         loginTestCases.performLogin(email, password);
 
-        String welcomeMessage = navbar.getWelcomeMessage().getText();
-        Assertions.assertEquals("Welcome " + email, welcomeMessage, "Incorrect email or password");
+        String welcomeMessage = navbarActions.getWelcomeMessage();
+        Assertions.assertEquals("Welcome " + email, welcomeMessage, "Incorrect success message");
     }
 
     @Test
@@ -58,6 +60,7 @@ public class LoginTest extends BaseTest {
         test.log(Status.INFO, "Perform invalid login without credentials");
         loginTestCases.performLogin("", "");
 
-
+        String errorMessage = loginActions.getErrorMessage();
+        Assertions.assertEquals("Please fill in all fields.", errorMessage, "Incorrect error message");
     }
 }
