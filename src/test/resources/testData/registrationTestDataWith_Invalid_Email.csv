@@ -1,0 +1,6 @@
+username, password, email
+InvalidUser1, AutoTest01, invalidEmail1
+InvalidUser2, AutoTest02, invalidEmail2@
+InvalidUser3, AutoTest03, @invalidEmail3
+InvalidUser4, AutoTest04, invalidEmail4@nothing.
+InvalidUser5, AutoTest05, invalidEmail5.tag

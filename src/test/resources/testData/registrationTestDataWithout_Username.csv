@@ -1,0 +1,4 @@
+password, email
+InvalidUserPass1, withoutUsername1@email.com
+InvalidUserPass2, withoutUsername2@email.com
+InvalidUserPass3, withoutUsername3@email.com
