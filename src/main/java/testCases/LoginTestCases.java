@@ -17,4 +17,14 @@ public class LoginTestCases {
         loginActions.enterPassword(password);
         loginActions.clickLoginButton();
     }
+
+    public void performLoginWithoutCredentials(){loginActions.clickLoginButton();}
+
+    public void performLoginWithoutUsernameOrEmail(String password){
+        loginActions.enterPassword(password);
+        loginActions.clickLoginButton();}
+
+    public void performLoginWithoutPassword(String username){
+        loginActions.enterUsername(username);
+        loginActions.clickLoginButton();}
 }
