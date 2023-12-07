@@ -6,8 +6,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.LoginPage;
 
-import java.time.Duration;
-
 public class LoginActions {
     private LoginPage loginPage;
     private WebDriverWait wait;
@@ -30,5 +28,10 @@ public class LoginActions {
     public void clickLoginButton() {
         WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(loginPage.getLoginButton()));
         loginButton.click();
+    }
+
+    public String getErrorMessage(){
+        WebElement errorMessageElement = wait.until(ExpectedConditions.visibilityOf(loginPage.getLoginErrorMessage()));
+        return errorMessageElement.getText();
     }
 }

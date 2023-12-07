@@ -15,6 +15,10 @@ public class LoginPage {
 
     @FindBy(id = "login-submit-button")
     private WebElement loginButton;
+
+    @FindBy(id = "login-error-message")
+    private WebElement loginErrorMessage;
+
     public LoginPage(WebDriver driver){
         PageFactory.initElements(driver, this);}
 
@@ -29,4 +33,6 @@ public class LoginPage {
     public WebElement getLoginButton() {
         return loginButton;
     }
+
+    public WebElement getLoginErrorMessage(){return loginErrorMessage;}
 }
