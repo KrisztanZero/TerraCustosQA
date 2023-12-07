@@ -11,9 +11,9 @@ public class LoginActions {
         this.loginPage = new LoginPage(driver);
     }
 
-    public void enterUsername(String username){
+    public void enterUsername(String usernameOrEmail){
         WebElement usernameField = loginPage.getUsernameField();
-        usernameField.sendKeys(username);
+        usernameField.sendKeys(usernameOrEmail);
     }
 
     public void enterPassword(String password){
