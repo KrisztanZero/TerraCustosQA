@@ -19,7 +19,7 @@ public class LoginTest extends BaseTest {
     private ProfileOffCanvas profileOffCanvas;
 
     public LoginTest() {
-        this.loginTestCases = new LoginTestCases(driver);
+        this.loginTestCases = new LoginTestCases(driver, wait);
         this.navbar = new Navbar(driver);
         this.profileOffCanvas = new ProfileOffCanvas(driver);
     }
