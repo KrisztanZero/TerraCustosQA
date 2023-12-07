@@ -55,12 +55,45 @@ public class LoginTest extends BaseTest {
     }
 
     @Test
-    public void loginWithoutCredentials(){
+    public void login_Without_Credentials(){
         logger.info("Perform invalid login without credentials");
         test.log(Status.INFO, "Perform invalid login without credentials");
         loginTestCases.performLogin("", "");
 
         String errorMessage = loginActions.getErrorMessage();
         Assertions.assertEquals("Please fill in all fields.", errorMessage, "Incorrect error message");
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/testData/loginTestDataWith_Invalid_Password.csv", numLinesToSkip = 1)
+    public void login_With_Invalid_Password(String username, String password){
+        logger.info("Perform login with invalid password");
+        test.log(Status.INFO, "Perform login with invalid password");
+        loginTestCases.performLogin(username, password);
+
+        String errorMessage = loginActions.getErrorMessage();
+        Assertions.assertEquals("An error occurred. Please try again.", errorMessage, "Incorrect error message");
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/testData/loginTestDataWithout_UsernameOrEmail.csv", numLinesToSkip = 1)
+    public void login_Without_Username_Or_Email(String password){
+        logger.info("Perform login without username or email");
+        test.log(Status.INFO, "Perform login without username or email");
+        loginTestCases.performLogin("", password);
+
+        String errorMessage = loginActions.getErrorMessage();
+        Assertions.assertEquals("Please enter a username or email.", errorMessage, "Incorrect error message");
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/testData/loginWithout_Password.csv", numLinesToSkip = 1)
+    public void login_Without_Password(String username){
+        logger.info("Perform login without password");
+        test.log(Status.INFO, "Perform login without password");
+        loginTestCases.performLogin(username, "");
+
+        String errorMessage = loginActions.getErrorMessage();
+        Assertions.assertEquals("Please enter a password.", errorMessage, "Incorrect error message");
     }
 }
