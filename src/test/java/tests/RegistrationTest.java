@@ -8,6 +8,7 @@ import com.aventstack.extentreports.Status;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 import testCases.RegistrationTestCases;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -27,10 +29,10 @@ public class RegistrationTest extends BaseTest {
 
     @BeforeAll
     public void InitComponents() {
-        navbarActions = new NavbarActions(driver, wait);
-        profileOffCanvasActions = new ProfileOffCanvasActions(driver, wait);
-        registrationTestCases = new RegistrationTestCases(driver, wait);
-        registrationActions = new RegistrationActions(driver, wait);
+        navbarActions = new NavbarActions(driver, wait, logger);
+        profileOffCanvasActions = new ProfileOffCanvasActions(driver, wait, logger);
+        registrationTestCases = new RegistrationTestCases(driver, wait, logger);
+        registrationActions = new RegistrationActions(driver, wait, logger);
     }
 
     @BeforeEach
@@ -41,120 +43,170 @@ public class RegistrationTest extends BaseTest {
     }
 
     @Order(1)
+    @Disabled("This test is currently disabled, accounts already registered and tested.")
     @ParameterizedTest
     @CsvFileSource(resources = "/testData/registrationTestDataWith_Valid_Credentials.csv", numLinesToSkip = 1)
-    public void registrationWith_Valid_Credentials(String username, String password, String email){
-        logger.info("Perform registration with valid credentials.");
-        test.log(Status.INFO,"Perform registration with valid credentials.");
-        registrationTestCases.performRegistration(username,password,email);
+    public void registrationWithValidCredentials(String username, String password, String email) {
         try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+            logger.info("Perform registration with valid credentials.");
+            test.log(Status.INFO, "Perform registration with valid credentials.");
+            registrationTestCases.performRegistration(username, password, email);
 
-        boolean presenceOfLoginButton = elementChecker.isElementPresent(By.id("login-submit-button"));
-        Assertions.assertTrue(presenceOfLoginButton);
+            test.log(Status.INFO, "Verify successful registration.");
+
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            boolean presenceOfLoginButton = elementChecker.isElementPresent(By.id("login-submit-button"));
+            Assertions.assertTrue(presenceOfLoginButton);
+            test.log(Status.PASS, "Test passed");
+
+        } catch (WebDriverException e) {
+            logger.error("Exception occurred in registrationWithValidCredentials: " + e.getMessage());
+            test.log(Status.FAIL, "Test Failed");
+
+            throw e;
+        }
     }
 
     @Order(2)
     @ParameterizedTest
     @CsvFileSource(resources = "/testData/registrationTestDataWith_ExistedUser.csv", numLinesToSkip = 1)
-    public void registrationWith_Existed_User(String username, String password, String email){
-        logger.info("Perform registration with existed user.");
-        test.log(Status.INFO,"Perform registration with existed user.");
-        registrationTestCases.performRegistration(username,password,email);
+    public void registrationWithExistedUser(String username, String password, String email) {
         try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+            logger.info("Perform registration with existed user.");
+            test.log(Status.INFO, "Perform registration with existed user.");
+            registrationTestCases.performRegistration(username, password, email);
 
-        String errorMessage = registrationActions.getErrorMessage();
-        Assertions.assertEquals("Username or email already registered",errorMessage, "Incorrect error message.");
+            test.log(Status.INFO, "Verify error message.");
+
+            String errorMessage = registrationActions.getErrorMessage();
+            Assertions.assertEquals("Username or email already registered", errorMessage, "Incorrect error message.");
+            test.log(Status.PASS, "Test passed");
+
+        } catch (WebDriverException e) {
+            logger.error("Exception occurred in registrationWithExistedUser: " + e.getMessage());
+            test.log(Status.FAIL, "Test Failed");
+
+            throw e;
+        }
     }
 
     @Order(3)
     @Test
-    public void registrationWithout_Credentials(){
-        logger.info("Perform registration without credentials.");
-        test.log(Status.INFO,"Perform registration without  credentials.");
-        registrationTestCases.performRegistrationWithoutCredentials();
+    public void registrationWithoutCredentials() {
         try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+            logger.info("Perform registration without credentials.");
+            test.log(Status.INFO, "Perform registration without  credentials.");
+            registrationTestCases.performRegistrationWithoutCredentials();
 
-        String errorMessage = registrationActions.getErrorMessage();
-        Assertions.assertEquals("Please fill in all fields.",errorMessage, "Incorrect error message.");
+            test.log(Status.INFO, "Verify error message.");
+
+            String errorMessage = registrationActions.getErrorMessage();
+            Assertions.assertEquals("Please fill in all fields.", errorMessage, "Incorrect error message.");
+            test.log(Status.PASS, "Test passed");
+
+        } catch (WebDriverException e) {
+            logger.error("Exception occurred in registrationWithoutCredentials: " + e.getMessage());
+            test.log(Status.FAIL, "Test Failed");
+
+            throw e;
+        }
     }
 
     @Order(4)
     @ParameterizedTest
     @CsvFileSource(resources = "/testData/registrationTestDataWith_Invalid_Email.csv", numLinesToSkip = 1)
-    public void registrationWith_Invalid_Email(String username, String password, String email){
-        logger.info("Perform registration with invalid email.");
-        test.log(Status.INFO,"Perform registration with invalid email.");
-
-        registrationTestCases.performRegistration(username,password,email);
+    public void registrationWithInvalidEmail(String username, String password, String email) {
         try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+            logger.info("Perform registration with invalid email.");
+            test.log(Status.INFO, "Perform registration with invalid email.");
 
-        String errorMessage = registrationActions.getErrorMessage();
-        Assertions.assertEquals("Please enter a valid email address",errorMessage, "Incorrect error message.");
+            registrationTestCases.performRegistration(username, password, email);
+
+            test.log(Status.INFO, "Verify error message.");
+
+            String errorMessage = registrationActions.getErrorMessage();
+            Assertions.assertEquals("Please enter a valid email address", errorMessage, "Incorrect error message.");
+            test.log(Status.PASS, "Test passed");
+
+        } catch (WebDriverException e) {
+            logger.error("Exception occurred in registrationWithInvalidEmail: " + e.getMessage());
+            test.log(Status.FAIL, "Test Failed");
+
+            throw e;
+        }
     }
 
     @Order(5)
     @ParameterizedTest
     @CsvFileSource(resources = "/testData/registrationTestDataWithout_Email.csv", numLinesToSkip = 1)
-    public void registrationWithout_Email(String username, String password){
-        logger.info("Perform registration without email.");
-        test.log(Status.INFO,"Perform registration without email.");
-        registrationTestCases.performRegistrationWithoutEmail(username,password);
+    public void registrationWithoutEmail(String username, String password) {
         try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+            logger.info("Perform registration without email.");
+            test.log(Status.INFO, "Perform registration without email.");
+            registrationTestCases.performRegistrationWithoutEmail(username, password);
 
-        String errorMessage = registrationActions.getErrorMessage();
-        Assertions.assertEquals("Please enter email",errorMessage, "Incorrect error message.");
+            test.log(Status.INFO, "Verify error message.");
+
+            String errorMessage = registrationActions.getErrorMessage();
+            Assertions.assertEquals("Please enter email", errorMessage, "Incorrect error message.");
+            test.log(Status.PASS, "Test passed");
+
+        } catch (WebDriverException e) {
+            logger.error("Exception occurred in registrationWithoutEmail: " + e.getMessage());
+            test.log(Status.FAIL, "Test Failed");
+
+            throw e;
+        }
     }
+
     @Order(6)
     @ParameterizedTest
     @CsvFileSource(resources = "/testData/registrationTestDataWithout_Username.csv", numLinesToSkip = 1)
-    public void registrationWithout_Username(String password, String email){
-        logger.info("Perform registration without username.");
-        test.log(Status.INFO,"Perform registration without username.");
-        registrationTestCases.performRegistrationWithoutUsername(password,email);
+    public void registrationWithoutUsername(String password, String email) {
         try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+            logger.info("Perform registration without username.");
+            test.log(Status.INFO, "Perform registration without username.");
+            registrationTestCases.performRegistrationWithoutUsername(password, email);
 
-        String errorMessage = registrationActions.getErrorMessage();
-        Assertions.assertEquals("Please enter username",errorMessage, "Incorrect error message.");
+            test.log(Status.INFO, "Verify error message.");
+
+            String errorMessage = registrationActions.getErrorMessage();
+            Assertions.assertEquals("Please enter username", errorMessage, "Incorrect error message.");
+            test.log(Status.PASS, "Test passed");
+
+        } catch (WebDriverException e) {
+            logger.error("Exception occurred in registrationWithoutUsername: " + e.getMessage());
+            test.log(Status.FAIL, "Test Failed");
+
+            throw e;
+        }
     }
 
     @Order(7)
     @ParameterizedTest
     @CsvFileSource(resources = "/testData/registrationTestDataWithout_Email.csv", numLinesToSkip = 1)
-    public void registrationWithout_Password(String username, String email){
-        logger.info("Perform registration without password.");
-        test.log(Status.INFO,"Perform registration without password.");
-        registrationTestCases.performRegistrationWithoutPassword(username,email);
+    public void registrationWithoutPassword(String username, String email) {
         try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+            logger.info("Perform registration without password.");
+            test.log(Status.INFO, "Perform registration without password.");
+            registrationTestCases.performRegistrationWithoutPassword(username, email);
 
-        String errorMessage = registrationActions.getErrorMessage();
-        Assertions.assertEquals("Please enter password",errorMessage, "Incorrect error message.");
+            test.log(Status.INFO, "Verify error message.");
+
+            String errorMessage = registrationActions.getErrorMessage();
+            Assertions.assertEquals("Please enter password", errorMessage, "Incorrect error message.");
+            test.log(Status.PASS, "Test passed");
+
+        } catch (WebDriverException e) {
+            logger.error("Exception occurred in registrationWithoutPassword: " + e.getMessage());
+            test.log(Status.FAIL, "Test Failed");
+
+            throw e;
+        }
     }
 }

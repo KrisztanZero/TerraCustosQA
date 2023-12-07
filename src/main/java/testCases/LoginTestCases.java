@@ -1,6 +1,7 @@
 package testCases;
 
 import actions.LoginActions;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -8,8 +9,8 @@ public class LoginTestCases {
 
     private LoginActions loginActions;
 
-    public LoginTestCases(WebDriver driver, WebDriverWait wait) {
-        this.loginActions = new LoginActions(driver, wait);
+    public LoginTestCases(WebDriver driver, WebDriverWait wait, Logger logger) {
+        this.loginActions = new LoginActions(driver, wait, logger);
     }
 
     public void performLogin(String usernameOrEmail, String password){

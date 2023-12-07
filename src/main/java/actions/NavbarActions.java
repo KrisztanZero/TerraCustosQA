@@ -1,5 +1,6 @@
 package actions;
 
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -9,10 +10,12 @@ import pages.Navbar;
 public class NavbarActions {
     private Navbar navbar;
     private WebDriverWait wait;
+    private Logger logger;
 
-    public NavbarActions(WebDriver driver, WebDriverWait wait) {
+    public NavbarActions(WebDriver driver, WebDriverWait wait, Logger logger) {
         this.navbar = new Navbar(driver);
         this.wait = wait;
+        this.logger = logger;
     }
 
     public String getWelcomeMessage(){

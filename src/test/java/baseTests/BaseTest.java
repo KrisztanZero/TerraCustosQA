@@ -37,7 +37,7 @@ public class BaseTest {
         test = ExtentManager.createTest(getClass().getSimpleName());
 
         driver = WebDriverSetup.getDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         driver.get(testProperties.getProperty("URL"));
 
         elementChecker = new ElementChecker(driver);
