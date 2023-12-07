@@ -7,6 +7,9 @@ import org.openqa.selenium.support.PageFactory;
 
 public class Navbar {
 
+    @FindBy(id = "brand-name")
+    private WebElement brandName;
+
     @FindBy(id = "navbar-welcome-message")
     private WebElement welcomeMessage;
 
@@ -19,4 +22,5 @@ public class Navbar {
 
     public WebElement getWelcomeMessage(){return welcomeMessage;}
     public WebElement getProfileIcon(){return profileIcon;}
+    public WebElement getBrandName(){return brandName;}
 }
