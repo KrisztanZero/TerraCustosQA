@@ -13,8 +13,8 @@ public class ExtentManager {
             extent = new ExtentReports();
 
             ExtentSparkReporter htmlReporter = new ExtentSparkReporter(reportPath);
-            htmlReporter.config().setDocumentTitle("Jira Automated Test Report");
-            htmlReporter.config().setReportName("Jira Automated Test Results");
+            htmlReporter.config().setDocumentTitle("Terra Custos Automated Test Report");
+            htmlReporter.config().setReportName("Terra Custos Automated Test Results");
             htmlReporter.config().setTheme(Theme.DARK);
 
             extent.attachReporter(htmlReporter);
