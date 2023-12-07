@@ -19,4 +19,14 @@ public class ProfileOffCanvasActions {
         WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(profileOffCanvas.getLoginButton()));
         loginButton.click();
     }
+
+    public void clickOnRegistration(){
+        WebElement registrationButton = wait.until(ExpectedConditions.elementToBeClickable(profileOffCanvas.getRegistrationButton()));
+        registrationButton.click();
+    }
+
+    public void clickOnLogout(){
+        WebElement logoutButton = wait.until(ExpectedConditions.elementToBeClickable(profileOffCanvas.getLogoutButton()));
+        logoutButton.click();
+    }
 }

@@ -17,16 +17,31 @@ public class LoginActions {
 
     public void enterUsername(String usernameOrEmail){
         WebElement usernameField = wait.until(ExpectedConditions.elementToBeClickable(loginPage.getUsernameField()));
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         usernameField.sendKeys(usernameOrEmail);
     }
 
     public void enterPassword(String password){
         WebElement passwordField = wait.until(ExpectedConditions.elementToBeClickable(loginPage.getPasswordField()));
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         passwordField.sendKeys(password);
     }
 
     public void clickLoginButton() {
         WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(loginPage.getLoginButton()));
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         loginButton.click();
     }
 

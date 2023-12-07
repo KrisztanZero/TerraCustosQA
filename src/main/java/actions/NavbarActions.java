@@ -25,6 +25,11 @@ public class NavbarActions {
         welcomeMessage.click();
     }
 
+    public void clickOnBrandName(){
+        WebElement navbarBrandName = waitForElementToBeClickable(navbar.getBrandName());
+        navbarBrandName.click();
+    }
+
     public void clickOnProfileIcon(){
         WebElement navbarProfileIcon = waitForElementToBeClickable(navbar.getProfileIcon());
         navbarProfileIcon.click();
