@@ -14,4 +14,3 @@ TerraCustosQA is a test automation project designed for the TerraCustos app, emp
 
 ## Testing Approach
 - Keyword-driven testing
-
